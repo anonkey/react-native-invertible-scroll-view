@@ -1,21 +1,21 @@
-'use strict';
+
 
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import React from 'react';
-import cloneReferencedElement from 'react-clone-referenced-element';
 import {
   ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
-import ScrollableMixin from 'react-native-scrollable-mixin';
+import cloneReferencedElement from './cloneReferencedElement';
+import ScrollableMixin from './ScrollableMixin';
 
 type DefaultProps = {
   renderScrollComponent: (props: Object) => ReactElement;
 };
 
-let InvertibleScrollView = createReactClass({
+const InvertibleScrollView = createReactClass({
   mixins: [ScrollableMixin],
 
   propTypes: {
@@ -39,10 +39,10 @@ let InvertibleScrollView = createReactClass({
   },
 
   render() {
-    var {
+    const {
       inverted,
       renderScrollComponent,
-      ...props,
+      ...props
     } = this.props;
 
     if (inverted) {
@@ -56,14 +56,12 @@ let InvertibleScrollView = createReactClass({
     }
 
     return cloneReferencedElement(renderScrollComponent(props), {
-      ref: component => { this._scrollComponent = component; },
+      ref: (component) => { this._scrollComponent = component; },
     });
   },
 
   _renderInvertedChildren(children, inversionStyle) {
-    return React.Children.map(children, child => {
-      return child ? <View style={inversionStyle}>{child}</View> : child;
-    });
+    return React.Children.map(children, child => child ? <View style={inversionStyle}>{child}</View> : child);
   },
 });
 
